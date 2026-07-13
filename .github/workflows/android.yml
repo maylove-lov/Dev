@@ -1,4 +1,4 @@
-name: Build Android APK
+name: Build Android (APK & AAB)
 
 on:
   push:
@@ -6,12 +6,15 @@ on:
       - main
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Node.js
@@ -24,25 +27,50 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '24'
+          java-version: '21'
           cache: gradle
 
-      - name: Install Dependencies
-        run: npm install
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Install Capacitor Assets
+        run: npm install -D @capacitor/assets
+
+      - name: Generate app icons & splash
+        run: npx capacitor-assets generate
 
       - name: Sync Capacitor
         run: npx cap sync android
 
-      - name: Grant Gradle Permission
+      - name: Grant Gradle permission
         run: chmod +x android/gradlew
 
       - name: Build Debug APK
-        run: |
-          cd android
-          ./gradlew assembleDebug
+        working-directory: android
+        run: ./gradlew assembleDebug
 
-      - name: Upload APK
+      - name: Build Release APK
+        working-directory: android
+        run: ./gradlew assembleRelease
+
+      - name: Build Release AAB
+        working-directory: android
+        run: ./gradlew bundleRelease
+
+      - name: Upload Debug APK
         uses: actions/upload-artifact@v4
         with:
-          name: MPorT-APK
+          name: app-debug
           path: android/app/build/outputs/apk/debug/app-debug.apk
+
+      - name: Upload Release APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release
+          path: android/app/build/outputs/apk/release/*.apk
+
+      - name: Upload Release AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release-aab
+          path: android/app/build/outputs/bundle/release/*.aab
