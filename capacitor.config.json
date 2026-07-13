@@ -9,5 +9,12 @@
       "mport.site.je",
       "*.mport.site.je"
     ]
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 5000,
+      "launchAutoHide": true,
+      "backgroundColor": "#FFFFFFFF"
+    }
   }
 }
