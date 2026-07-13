@@ -20,7 +20,7 @@ Aplikasi MandalaNet.id portal
 «Ganti URL di bawah dengan screenshot aplikasi Anda.»
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/USERNAME/REPOSITORY/main/screenshots/home.png" width="260">
+  <img src="Screenshot_20260713_211106.jpg" width="260">
   <img src="https://raw.githubusercontent.com/USERNAME/REPOSITORY/main/screenshots/menu.png" width="260">
 </p>---
 
