@@ -1,11 +1,5 @@
-window.addEventListener("load", async () => {
+window.addEventListener("DOMContentLoaded", () => {
 
-    const ok = await authenticateApp();
-
-    if (ok) {
-        location.href = "dashboard.html";
-    } else {
-        location.href = "offline.html";
-    }
+    loadHome();
 
 });
